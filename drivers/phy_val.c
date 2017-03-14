@@ -153,7 +153,7 @@ tc2105mlReadErrOverSum(unsigned char port_num)
     int err_over_sum,err_over_cnt1,err_over_cnt2;
     
     err_over_cnt1 = (tcPhyReadReg(port_num,25) & 0x0000007ff);
-    udelay(300000);
+    udelay(30000);
     err_over_cnt2 = (tcPhyReadReg(port_num,25) & 0x0000007ff);
     err_over_sum = err_over_cnt2 - err_over_cnt1;
     if( err_over_sum < 0 ){

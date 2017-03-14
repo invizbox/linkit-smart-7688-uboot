@@ -1342,6 +1342,12 @@ __attribute__((nomips16)) void board_init_r (gd_t *id, ulong dest_addr)
 
 	Init_System_Mode(); /*  Get CPU rate */
 
+
+        RALINK_REG(RALINK_SYSCTL_BASE+0x60)|= (1<<2);/*gpio3,gpio4*/
+        RALINK_REG(RALINK_SYSCTL_BASE+0x600)|= (1<<4);
+        RALINK_REG(RALINK_SYSCTL_BASE+0x640)|= (1<<4);
+
+
 #if defined(MT7628_ASIC_BOARD)	/* Enable WLED share pin */
 	RALINK_REG(RALINK_SYSCTL_BASE+0x3C)|= (1<<8);	
 	RALINK_REG(RALINK_SYSCTL_BASE+0x64)&= ~((0x3<<16)|(0x3));
@@ -1931,7 +1937,6 @@ __attribute__((nomips16)) void board_init_r (gd_t *id, ulong dest_addr)
 		--timer2;
 		for (i=0; i<10; ++i)
 		{
-			//printf("624:%X\n",(RALINK_REG(RALINK_SYSCTL_BASE+0x620)&1<<18));
 			if((RALINK_REG(RALINK_SYSCTL_BASE+0x620)&1<<18)==0)
 			{
 				printf("gpio18 pushed\n");
@@ -1945,7 +1950,7 @@ __attribute__((nomips16)) void board_init_r (gd_t *id, ulong dest_addr)
 				goto update;
 			}
 			
-			udelay (100000);
+			udelay (10000);
 		}	
 	}
 
@@ -1955,7 +1960,7 @@ __attribute__((nomips16)) void board_init_r (gd_t *id, ulong dest_addr)
 	{
 	    char * s;
 	    s = getenv ("bootdelay");
-	    timer1 = s ? (int)simple_strtol(s, NULL, 10) : CONFIG_BOOTDELAY;
+	    timer1 = 1;//s ? (int)simple_strtol(s, NULL, 10) : CONFIG_BOOTDELAY;
 	}
 	s = getenv ("BootType");
 	if(s) {
